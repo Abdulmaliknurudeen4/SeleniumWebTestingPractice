@@ -14,6 +14,9 @@ public class LandingPage extends AbstractComponents {
     @FindBy(id = "login")
     WebElement logInBtn;
 
+    @FindBy(css = "[class*='flyInOut']")
+    WebElement errorMessage;
+
     private final WebDriver webDriver;
 
     public LandingPage(WebDriver webDriver) {
@@ -28,6 +31,11 @@ public class LandingPage extends AbstractComponents {
         logInBtn.click();
 
         return new ProductCatalogue(webDriver);
+    }
+
+    public String getErrorMessage(){
+        waitForElementToAppear(errorMessage);
+        return errorMessage.getText();
     }
 
     public void goTo(){
