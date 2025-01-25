@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.Properties;
 
 public class BaseTest {
     public WebDriver driver;
+    public LandingPage landingPage;
 
     public WebDriver initializeDriver() throws IOException {
         Properties properties = new Properties();
@@ -33,11 +36,17 @@ public class BaseTest {
         return driver;
     }
 
+    @BeforeMethod
     public LandingPage launchApplication() throws IOException {
-        WebDriver webDriver = this.initializeDriver();
-        LandingPage landingPage = new LandingPage(webDriver);
+        this.driver = this.initializeDriver();
+        this.landingPage = new LandingPage(driver);
         landingPage.goTo();
         driver.manage().window().fullscreen();
         return landingPage;
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        this.driver.close();
     }
 }

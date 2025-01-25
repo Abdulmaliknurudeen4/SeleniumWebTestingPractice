@@ -17,7 +17,7 @@ public class submitOrderSample extends BaseTest {
         String password = "Password360444#";
         String productName = "IPHONE 13 PRO";
 
-        ProductCatalogue productCatalogue = super.launchApplication()
+        ProductCatalogue productCatalogue = launchApplication()
                 .loginApplication(username, password);
         productCatalogue.addProductToCart(productName);
 
