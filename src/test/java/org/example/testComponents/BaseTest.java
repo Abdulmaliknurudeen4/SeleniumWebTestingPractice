@@ -16,7 +16,7 @@ public class BaseTest {
 
     public WebDriver initializeDriver() throws IOException {
         Properties properties = new Properties();
-        FileInputStream fileInputStream = new FileInputStream(STR."\{System.getProperty("user.dir")}//org//example//properties//GlobalProperties.properties");
+        FileInputStream fileInputStream = new FileInputStream(STR."\{System.getProperty("user.dir")}//src//test//java//org//example//properties//GlobalProperties.properties");
         properties.load(fileInputStream);
         String browserName = properties.getProperty("browser");
         if (browserName.equalsIgnoreCase("chrome")) {
@@ -37,6 +37,7 @@ public class BaseTest {
         WebDriver webDriver = this.initializeDriver();
         LandingPage landingPage = new LandingPage(webDriver);
         landingPage.goTo();
+        driver.manage().window().fullscreen();
         return landingPage;
     }
 }
