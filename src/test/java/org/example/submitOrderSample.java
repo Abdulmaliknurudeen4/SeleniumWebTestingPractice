@@ -10,12 +10,13 @@ import java.io.IOException;
 import static org.testng.Assert.assertTrue;
 
 public class submitOrderSample extends BaseTest {
+    String username = "abdulmaliknurudeen4@gmail.com";
+    String password = "Password360444#";
+    String productName = "IPHONE 13 PRO";
 
     @Test
-    public  void main() throws IOException {
-        String username = "abdulmaliknurudeen4@gmail.com";
-        String password = "Password360444#";
-        String productName = "IPHONE 13 PRO";
+    public  void orderTest() throws IOException {
+
 
         ProductCatalogue productCatalogue = launchApplication()
                 .loginApplication(username, password);
@@ -35,6 +36,14 @@ public class submitOrderSample extends BaseTest {
         OrderConfirmationPage orderConfirmationPage = checkOutPage.checkOut();
         String confirmationText = orderConfirmationPage.getConfirmationText();
         Assert.assertTrue(confirmationText.equalsIgnoreCase("THANKYOU FOR THE ORDER."));
-        driver.close();
+    }
+
+    @Test(dependsOnMethods = {"orderTest"})
+    public void orderHistoryTest() throws IOException {
+        ProductCatalogue productCatalogue = launchApplication()
+                .loginApplication(username, password);
+        OrderPage orderPage = productCatalogue.gotoOrdersPage();
+        boolean b = orderPage.verifyOrderDisplay(productName);
+        assertTrue(b);
     }
 }

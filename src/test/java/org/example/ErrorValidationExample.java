@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ErrorValidationExample extends BaseTest {
 
-    @Test
+    @Test(groups = {"errorHandling"})
     public  void main() throws IOException {
         String username = "abdulmalrudeen4@gmail.com";
         String password = "Password360444#";
