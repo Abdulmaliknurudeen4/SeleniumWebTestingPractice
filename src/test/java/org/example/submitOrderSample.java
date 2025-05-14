@@ -1,11 +1,15 @@
 package org.example;
 
+import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.*;
 import org.example.testComponents.BaseTest;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -56,5 +60,13 @@ public class submitOrderSample extends BaseTest {
         return jsonDataToMap.stream()
                 .map(map -> new Object[]{map})
                 .toArray(Object[][]::new);
+    }
+
+    public String getScreenShot(String testCaseName) throws IOException {
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
+        File file = new File(STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//PurchaseOrder.png");
+        FileUtils.copyFile(screenshotAs, file);
+        return STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//PurchaseOrder.png";
     }
 }
