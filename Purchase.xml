@@ -3,6 +3,7 @@
 <suite name="Suite">
     <listeners>
         <listener class-name="org.example.testComponents.Listeners" />
+<!--        <listener class-name="org.example.testComponents.Retry" />-->
     </listeners>
 
     <test name="ErrorValidation" thread-count="5">
