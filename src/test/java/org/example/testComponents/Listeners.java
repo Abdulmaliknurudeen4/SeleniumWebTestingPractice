@@ -14,30 +14,32 @@ import java.io.IOException;
 public class Listeners extends BaseTest implements ITestListener {
     ExtentReports extent = ExtentReporterNG.getReportObject();
     ExtentTest test;
+    ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<>();
 
     @Override
     public void onTestStart(ITestResult result) {
       test =  extent.createTest(result.getMethod().getMethodName());
+      extentTestThreadLocal.set(test);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        test.log(Status.PASS, "Test Passed");
+        extentTestThreadLocal.get().log(Status.PASS, "Test Passed");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        test.log(Status.FAIL, "Test Failed");
+        extentTestThreadLocal.get().log(Status.FAIL, "Test Failed");
         try {
             driver = (WebDriver) result.getTestClass().getRealClass().getField("driver")
                             .get(result.getInstance());
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-        test.fail(result.getThrowable());
+        extentTestThreadLocal.get().fail(result.getThrowable());
         try {
            String filePath =  getScreenShot(result.getMethod().getMethodName(), driver);
-           test.addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
+            extentTestThreadLocal.get().addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
         } catch (IOException e) {
             e.printStackTrace();
         }
