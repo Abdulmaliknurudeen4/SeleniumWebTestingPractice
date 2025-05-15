@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.LandingPage;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -19,6 +21,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 public class BaseTest {
     public WebDriver driver;
@@ -67,5 +70,15 @@ public class BaseTest {
     @AfterMethod
     public void tearDown() {
         this.driver.close();
+    }
+
+    public String getScreenShot(String testCaseName, WebDriver driver) throws IOException {
+        String fileName = UUID.randomUUID().toString();
+        String filepath = STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//"+fileName+".png";
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
+        File file = new File(filepath);
+        FileUtils.copyFile(screenshotAs, file);
+        return filepath;
     }
 }

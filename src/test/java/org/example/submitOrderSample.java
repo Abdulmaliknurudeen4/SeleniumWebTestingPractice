@@ -62,11 +62,5 @@ public class submitOrderSample extends BaseTest {
                 .toArray(Object[][]::new);
     }
 
-    public String getScreenShot(String testCaseName) throws IOException {
-        TakesScreenshot ts = (TakesScreenshot) driver;
-        File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
-        File file = new File(STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//PurchaseOrder.png");
-        FileUtils.copyFile(screenshotAs, file);
-        return STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//PurchaseOrder.png";
-    }
+
 }
