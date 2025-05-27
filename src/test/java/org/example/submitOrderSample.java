@@ -1,15 +1,11 @@
 package org.example;
 
-import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.*;
 import org.example.testComponents.BaseTest;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -43,11 +39,11 @@ public class submitOrderSample extends BaseTest {
     }
 
     @Test(dataProvider = "getData", dependsOnMethods = {"orderTest"})
-    public void orderHistoryTest(String email, String password, String productName) throws IOException {
+    public void orderHistoryTest(HashMap<String, String> input) throws IOException {
         ProductCatalogue productCatalogue = launchApplication()
-                .loginApplication(email, password);
+                .loginApplication(input.get("email"), input.get("password"));
         OrderPage orderPage = productCatalogue.gotoOrdersPage();
-        boolean b = orderPage.verifyOrderDisplay(productName);
+        boolean b = orderPage.verifyOrderDisplay(input.get("product"));
         assertTrue(b);
     }
 
@@ -55,12 +51,11 @@ public class submitOrderSample extends BaseTest {
     public Object[][] getData() throws IOException {
 
         List<HashMap<String, String>> jsonDataToMap
-                = getJsonDataToMap(STR."\{System.getProperty("user.dir")}//src//test//java//org//example//data//PurchaseOrder.json");
+                = getJsonDataToMap(System.getProperty("user.dir") + "//src//test//java//org//example//data//PurchaseOrder.json");
 
         return jsonDataToMap.stream()
                 .map(map -> new Object[]{map})
                 .toArray(Object[][]::new);
+
     }
-
-
 }

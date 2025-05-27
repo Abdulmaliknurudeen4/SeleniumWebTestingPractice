@@ -29,7 +29,7 @@ public class BaseTest {
 
     public WebDriver initializeDriver() throws IOException {
         Properties properties = new Properties();
-        FileInputStream fileInputStream = new FileInputStream(STR."\{System.getProperty("user.dir")}//src//test//java//org//example//properties//GlobalProperties.properties");
+        FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"//src//test//java//org//example//properties//GlobalProperties.properties");
         properties.load(fileInputStream);
         String browserName = properties.getProperty("browser");
         if (browserName.equalsIgnoreCase("chrome")) {
@@ -74,7 +74,7 @@ public class BaseTest {
 
     public String getScreenShot(String testCaseName, WebDriver driver) throws IOException {
         String fileName = UUID.randomUUID().toString();
-        String filepath = STR."\{System.getProperty("user.dir")}//reports//"+testCaseName+"//"+fileName+".png";
+        String filepath = System.getProperty("user.dir")+"//reports//"+testCaseName+"//"+fileName+".png";
         TakesScreenshot ts = (TakesScreenshot) driver;
         File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
         File file = new File(filepath);
