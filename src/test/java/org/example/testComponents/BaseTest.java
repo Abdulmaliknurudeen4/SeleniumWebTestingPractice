@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.LandingPage;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
@@ -29,11 +31,20 @@ public class BaseTest {
 
     public WebDriver initializeDriver() throws IOException {
         Properties properties = new Properties();
-        FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir")+"//src//test//java//org//example//properties//GlobalProperties.properties");
+        FileInputStream fileInputStream = new FileInputStream(System.getProperty("user.dir") + "//src//test//java//org//example//properties//GlobalProperties.properties");
         properties.load(fileInputStream);
-        String browserName = properties.getProperty("browser");
-        if (browserName.equalsIgnoreCase("chrome")) {
-            this.driver = new ChromeDriver();
+
+        String browserName = System.getProperty("browser") != null ? System.getProperty("browser")
+                : properties.getProperty("browser");
+
+        if (browserName.contains("chrome")) {
+            ChromeOptions options = new ChromeOptions();
+
+            if (browserName.contains("headless")) {
+                options.addArguments("headless");
+            }
+            this.driver = new ChromeDriver(options);
+            driver.manage().window().setSize(new Dimension(1440,999));
         } else if (browserName.equalsIgnoreCase("firefox")) {
             this.driver = new FirefoxDriver();
         } else if (browserName.equalsIgnoreCase("edge")) {
@@ -74,7 +85,7 @@ public class BaseTest {
 
     public String getScreenShot(String testCaseName, WebDriver driver) throws IOException {
         String fileName = UUID.randomUUID().toString();
-        String filepath = System.getProperty("user.dir")+"//reports//"+testCaseName+"//"+fileName+".png";
+        String filepath = System.getProperty("user.dir") + "//reports//" + testCaseName + "//" + fileName + ".png";
         TakesScreenshot ts = (TakesScreenshot) driver;
         File screenshotAs = ts.getScreenshotAs(OutputType.FILE);
         File file = new File(filepath);
