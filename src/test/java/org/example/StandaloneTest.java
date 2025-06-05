@@ -17,6 +17,7 @@ import static org.testng.Assert.assertTrue;
 
 public class StandaloneTest {
     public static void main(String[] args) {
+        //New comments are added for demo
         String username = "abdulmaliknurudeen4@gmail.com";
         String password = "Password360444#";
         String productName = "IPHONE 13 PRO";
